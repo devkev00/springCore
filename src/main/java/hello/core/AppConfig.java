@@ -8,21 +8,28 @@ import hello.core.member.MemberServiceImpl;
 import hello.core.member.MemoryMemberRepository;
 import hello.core.order.OrderService;
 import hello.core.order.OrderServiceImpl;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 public class AppConfig {
 
+    @Bean // 스프링 컨테이너에 등록하는 어노테이션
     public MemberService memberService() {
         return new MemberServiceImpl(memberRepository());
     }
 
-    private static MemberRepository memberRepository() {
+    @Bean
+    public static MemberRepository memberRepository() {
         return new MemoryMemberRepository();
     }
 
+    @Bean
     public OrderService orderService() {
         return new OrderServiceImpl(memberRepository(), discountPolicy());
     }
 
+    @Bean
     public DiscountPolicy discountPolicy() {
         // return new FixDiscountPolicy();
         // DIP를 지키면 이렇게 클라이언트 코드를 하나도 변경하지 않고도 로직을 변경할 수 있다.
