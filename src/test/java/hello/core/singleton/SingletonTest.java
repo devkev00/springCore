@@ -25,4 +25,22 @@ public class SingletonTest {
         // memberService1 != memberService2
         Assertions.assertThat(memberService1).isNotSameAs(memberService2);
     }
+
+    @Test
+    @DisplayName("싱글톤 패턴을 적용한 객체 사용")
+    void singletonServiceTest() {
+        SingletonService singletonService1 = SingletonService.getInstance();
+        SingletonService singletonService2 = SingletonService.getInstance();
+
+        // 참조값이 같음을 알 수 있음
+        System.out.println("singletonService2 = " + singletonService2);
+        System.out.println("singletonService1 = " + singletonService1);
+
+        Assertions.assertThat(singletonService1).isSameAs(singletonService2);
+
+        // same과 equal의 차이
+        // same: ==, 참조 동일 (값이 같아도 참조가 다르면 false 반환)
+        // equal: 값 동일성 (실제 내용이 같은지 비교)
+
+    }
 }
