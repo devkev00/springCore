@@ -1,5 +1,8 @@
 package hello.core;
 
+import hello.core.member.MemberRepository;
+import hello.core.member.MemoryMemberRepository;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
@@ -13,4 +16,12 @@ import org.springframework.context.annotation.FilterType;
 )
 public class AutoAppConfig {
 
+    // bean을 수동 등록했다.
+    // 이런 경우 자동 등록 빈을 수동 등록 빈이 오버라이딩 하게 된다.
+    // 하지만 이렇게 될 경우 버그 발생 시 잡기가 정말 힘들기 때문에,
+    // 최근 스프링부트에서는 자동 등록 빈과 수동 등록 빈이 충돌될 시 오류를 발생하도록 정책을 변경하였다.
+    @Bean(name = "memoryMemberRepository")
+    MemberRepository MemberRepository() {
+        return new MemoryMemberRepository();
+    }
 }
