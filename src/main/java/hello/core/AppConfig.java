@@ -11,7 +11,7 @@ import hello.core.order.OrderServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+@Configuration // 스프링 설정때는 항상 고민 말고 쓰자~
 public class AppConfig {
 
     @Bean // 스프링 컨테이너에 등록하는 어노테이션
