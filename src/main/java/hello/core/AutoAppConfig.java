@@ -20,8 +20,9 @@ public class AutoAppConfig {
     // 이런 경우 자동 등록 빈을 수동 등록 빈이 오버라이딩 하게 된다.
     // 하지만 이렇게 될 경우 버그 발생 시 잡기가 정말 힘들기 때문에,
     // 최근 스프링부트에서는 자동 등록 빈과 수동 등록 빈이 충돌될 시 오류를 발생하도록 정책을 변경하였다.
-    @Bean(name = "memoryMemberRepository")
-    MemberRepository MemberRepository() {
-        return new MemoryMemberRepository();
-    }
+
+//    @Bean(name = "memoryMemberRepository")
+//    MemberRepository MemberRepository() {
+//        return new MemoryMemberRepository();
+//    }
 }
