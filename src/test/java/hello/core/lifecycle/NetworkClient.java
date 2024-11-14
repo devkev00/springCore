@@ -1,5 +1,8 @@
 package hello.core.lifecycle;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
+
 public class NetworkClient {
     public String url;
 
@@ -30,14 +33,18 @@ public class NetworkClient {
     }
 
 
-    // 이름 임의로 지정
+    // 최신 자바 권장
+    // 스프링 아닌 다른 컨테이너에서도 동작
+    // 컴포넌트 스캔과도 잘 어울림 (빈을 따로 등록하지 않으므로)
+    // 다만 외부 라이브러리에는 적용 불가능
+    @PostConstruct
     public void init() throws Exception { // 의존관계 주입을 먼저 해주고 호출해주는 메서드
         System.out.println("NetworkClient.init");
         connect();
         call("초기화 연결 메시지");
     }
 
-    // 이름 임의로 지정
+    @PreDestroy
     public void close() throws Exception { // 빈이 종료될 떄 호출
         System.out.println("NetworkClient.close");
         disconnect();
