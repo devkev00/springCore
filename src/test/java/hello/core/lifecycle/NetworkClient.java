@@ -1,10 +1,6 @@
 package hello.core.lifecycle;
 
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
-
-// 얘네의 단점: 스프링 무조건 써야 함, 메서드 이름 변경 안됨, 외부 라이브러리에 적용 불가능 (현재는 거의 사용 x)
-public class NetworkClient implements InitializingBean, DisposableBean {
+public class NetworkClient {
     public String url;
 
     public NetworkClient() {
@@ -33,16 +29,17 @@ public class NetworkClient implements InitializingBean, DisposableBean {
         System.out.println("close: " + url);
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception { // 의존관계 주입을 먼저 해주고 호출해주는 메서드
-        System.out.println("NetworkClient.afterPropertiesSet");
+
+    // 이름 임의로 지정
+    public void init() throws Exception { // 의존관계 주입을 먼저 해주고 호출해주는 메서드
+        System.out.println("NetworkClient.init");
         connect();
         call("초기화 연결 메시지");
     }
 
-    @Override
-    public void destroy() throws Exception { // 빈이 종료될 떄 호출
-        System.out.println("NetworkClient.destroy");
+    // 이름 임의로 지정
+    public void close() throws Exception { // 빈이 종료될 떄 호출
+        System.out.println("NetworkClient.close");
         disconnect();
     }
 }
