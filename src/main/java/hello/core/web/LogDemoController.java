@@ -3,22 +3,23 @@ package hello.core.web;
 import hello.core.common.MyLogger;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@Configuration
+@Controller
 @RequiredArgsConstructor
 public class LogDemoController {
 
     private final LogDemoService logDemoService;
-    private final MyLogger myLogger;
-    // 현재 LogDemoController는 싱글톤 빈이기 때문에 MyLogger를 주입받으려 할 때 스코프 불일치 문제 발생
-    // 라이프 사이클 불일치: LogDemoController는 앱 시작 시점에 생성, MyLogger는 http 요청 시점에 생성
+    private final ObjectProvider<MyLogger> myLoggerProvider;
+    // 실제 http 요청 시까지 MyLogger의 생성을 지연
 
     @RequestMapping("log-demo")
     @ResponseBody
     public String logDemo(HttpServletRequest request) {
+        MyLogger myLogger = myLoggerProvider.getObject();
         String requestURL = request.getRequestURL().toString();
         myLogger.setRequestURL(requestURL);
 
