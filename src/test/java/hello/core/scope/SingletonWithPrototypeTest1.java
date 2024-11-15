@@ -3,10 +3,10 @@ package hello.core.scope;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
+import jakarta.inject.Provider;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -45,11 +45,14 @@ public class SingletonWithPrototypeTest1 {
     static class ClientBean {
 
         @Autowired
-        // 스프링에 의존한다는 단점 존재
-        private ObjectProvider<PrototypeBean> prototypeBeanProvider;
+        // 자바 표준의 Provider 의존성 추가 (build.gradle)
+        // 메서드가 get() 하나로 매우 단순, 스프링 의존 x
+        // 자바 표준 vs 스프링 컨테이너
+        // 기능이 더 편리하다면 스프링, 기능이 비슷하거나 스프링이 표준을 쓰라고 권한다면 자바 표준 선택
+        private Provider<PrototypeBean> prototypeBeanProvider;
 
         public int logic() {
-            PrototypeBean prototypeBean = prototypeBeanProvider.getObject(); // 새로운 빈을 하나 가져옴
+            PrototypeBean prototypeBean = prototypeBeanProvider.get(); // 새로운 빈을 하나 가져옴
             prototypeBean.addCount();
             int count = prototypeBean.getCount();
             return count;
