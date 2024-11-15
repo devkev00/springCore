@@ -3,6 +3,7 @@ package hello.core.scope;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -35,23 +36,20 @@ public class SingletonWithPrototypeTest1 {
 
         ClientBean clientBean2 = ac.getBean(ClientBean.class);
         int count2 = clientBean2.logic();
-        assertThat(count2).isEqualTo(2);
-        // 1이 아니라 2
-        // singleton이기 때문에 발생하는 문제
+        assertThat(count2).isEqualTo(1);
+        // 이제 1임
+        // ObjectProvider로 새로운 프로토타입 빈을 제공했기 때문
     }
 
     @Scope("singleton")
     static class ClientBean {
-        private final PrototypeBean prototypeBean;
-        // 생성 시점에 주입된 prototype 빈을 계속 사용
-        // 생성마다 새로운 인스턴스를 생성하는 프로토타입의 사용 의도 무시
 
         @Autowired
-        public ClientBean(PrototypeBean prototypeBean) {
-            this.prototypeBean = prototypeBean;
-        }
+        // 스프링에 의존한다는 단점 존재
+        private ObjectProvider<PrototypeBean> prototypeBeanProvider;
 
         public int logic() {
+            PrototypeBean prototypeBean = prototypeBeanProvider.getObject(); // 새로운 빈을 하나 가져옴
             prototypeBean.addCount();
             int count = prototypeBean.getCount();
             return count;
